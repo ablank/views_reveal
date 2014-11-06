@@ -1,0 +1,160 @@
+<?php
+/**
+ * @file
+ * Integrates Views with Reveal.js.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function views_reveal_views_api() {
+  $inc = drupal_get_path('module', 'views_reveal') . '/inc';
+
+  return array(
+    'api' => 3.0,
+    'path' => $inc,
+    'template path' => $inc,
+  );
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function views_reveal_libraries_info() {
+  $libraries = array();
+  $libraries['reveal'] = array(
+    'name' => 'RevealJS',
+    'vendor url' => 'http://lab.hakim.se/reveal-js/',
+    'download url' => 'https://github.com/hakimel/reveal.js',
+    'version callback' => '_reveal_version',
+    'files' => array(
+      'js' => array(
+        'reveal.min.js',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ *
+  function views_reveal_library() {
+  $libraries = array();
+  $library_path = libraries_get_path('reveal');
+  }
+ */
+
+/**
+ * Versioning info for library.
+ */
+function views_reveal_version() {
+  // Short-circuit the version argument requirement.
+  return TRUE;
+}
+
+/**
+ * Implements hook_init().
+ */
+function views_reveal_init() {
+
+  //dpm(variable_get('views_reveal_theme'));
+  //libraries_load('reveal');
+  //dpm(libraries_get_libraries());
+}
+
+/**
+ * Template function for views_reveal style plugin.
+ *
+ * @param array $vars
+ *   Array of template variables.
+  //hook_views_pre_view(&$view, &$display_id, &$args)
+ */
+function template_preprocess_views_view_reveal(&$vars) {
+  //dpm($vars);
+  $view = $vars['view'];
+  $result = $view->result;
+  $handler = $view->style_plugin;
+  $lib = libraries_get_path('reveal');
+  $options = views_reveal_get_settings($view->style_plugin->options);
+
+  /*
+  drupal_add_css($lib . '/css/reveal.css', array(
+    'type' => 'file',
+    'scope' => CSS_DEFAULT,
+    'weight' => 0,
+  ));
+*/
+  drupal_add_css($lib . '/css/theme/' . $options['theme'] . 'css', array(
+    'type' => 'file',
+    'scope' => CSS_DEFAULT,
+    'weight' => 0,
+  ));
+
+  drupal_add_js($lib . '/js/reveal.min.js', array(
+    'type' => 'file',
+    'scope' => JS_DEFAULT,
+    'weight' => 0,
+  ));
+  drupal_add_js(drupal_get_path('module', 'views_reveal') . '/js/views_reveal.js', array(
+    'type' => 'file',
+    'scope' => JS_DEFAULT,
+    'weight' => 1,
+  ));
+  // Add Reveal JS settings.
+  drupal_add_js(array('views_reveal' => $options), array(
+    'type' => 'setting',
+    'scope' => JS_DEFAULT
+  ));
+}
+
+/**
+ * Get plugin settings.
+ */
+function views_reveal_get_settings($array) {
+  $options = array();
+  foreach ($array as $key => $value) {
+    if (!is_array($value)) {
+      $options[$key] = $value;
+    }
+    else {
+      $options = array_merge($options, views_reveal_get_settings($value));
+    }
+  }
+
+  return $options;
+}
+
+/**
+ * Implements hook_help().
+ */
+function views_reveal_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+
+    case 'admin/help#views_reveal':
+      $output .= '<p>' . t('The Views Reveal module provides the ability to '
+      . 'create Reveal.js presentations using fields from Views.') . '</p>';
+      $output .= '<h2>' . t('Views integration') . '</h2>';
+      $output .= '<p>';
+      $output .= t('Configuration options for Views Reveal are accessible '
+      . 'through Views Format Settings. ');
+
+      if (module_exists('views_ui')) {
+        $output .= t('You may configure a new view through the '
+        . '<a href="!views-url">Views module interface</a>. '
+        . 'After adding a new view, change the format of the display style '
+        . 'to "Reveal Presentation" and configure the Settings. ');
+      }
+      else {
+        $output .= t('This site not have Views (or the Views UI module) '
+        . 'installed currently. You may be able to turn on this module under '
+        . 'your site\'s <a href="!modules-url">module page</a>, or you may '
+        . 'have to <a href="http://drupal.org/project/views">download Views '
+        . 'module</a> and install it.', array('!modules-url' => url('admin/modules')));
+      }
+      $output .= '</p>';
+
+      return $output;
+  }
+}

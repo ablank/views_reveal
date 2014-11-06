@@ -1,0 +1,11 @@
+name = Views Reveal
+description = Create a Reveal.js presentation using Views.
+core = 7.x
+package = Views
+
+dependencies[] = views
+dependencies[] = libraries
+
+files[] = views_reveal.module
+files[] = inc/views_reveal.views.inc
+files[] = inc/views_reveal_style_plugin.inc

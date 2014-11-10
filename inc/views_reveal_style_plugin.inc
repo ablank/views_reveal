@@ -9,8 +9,7 @@
  *
  * @ingroup views_style_plugins
  */
-class views_reveal_style_plugin extends views_plugin_style
-{
+class views_reveal_style_plugin extends views_plugin_style {
 
   /**
    * Views Reveal options.
@@ -67,13 +66,12 @@ class views_reveal_style_plugin extends views_plugin_style
    */
   public function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
-    //dpm($this);
     $options = views_reveal_get_settings($this->options);
     // Number of options to provide in count-based options.
     $range = drupal_map_assoc(range(1, 10));
     $bool = array(
-      true => t('True'),
-      false => t('False'),
+      1 => t('True'),
+      0 => t('False'),
     );
     $percent = drupal_map_assoc(array(
       '10%',

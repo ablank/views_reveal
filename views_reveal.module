@@ -33,9 +33,9 @@ function views_reveal_libraries_info() {
         'lib/js/html5shiv.js',
         'js/reveal.min.js',
       ),
-      'css' => arraY(
+      'css' => array(
         'css/reveal.css',
-      )
+      ),
     ),
   );
 
@@ -72,7 +72,6 @@ function views_reveal_theme($existing, $type, $theme, $path) {
  * Implements hook_theme_preprocess_page().
  */
 function views_reveal_preprocess_page(&$vars) {
-  //$vars['directory'] = drupal_get_path('module', 'views_reveal');
   $view = views_get_page_view();
   if (!empty($view)) {
     if ($view->style_plugin->plugin_name === 'reveal') {
@@ -86,7 +85,6 @@ function views_reveal_preprocess_page(&$vars) {
  *
  * @param array $vars
  *   Array of template variables.
-  //hook_views_pre_view(&$view, &$display_id, &$args)
  */
 function template_preprocess_views_view_reveal(&$vars) {
 // Script/styles breaks Views UI- don't add to admin.
@@ -97,21 +95,21 @@ function template_preprocess_views_view_reveal(&$vars) {
     $lib = libraries_get_path('reveal');
     $options = views_reveal_get_settings($view->style_plugin->options);
     /**/
-// Load library js & css.
+    // Load library js & css.
     libraries_load('reveal');
-// Add Reveal JS settings.
+    // Add Reveal JS settings.
     $settings = $options;
-    $settings['lib'] = $GLOBALS['base_path'] . $lib;
     // $settings['dependencies'] = views_reveal_dependencies($settings);
-// Add module js settings.
+    $settings['lib'] = $GLOBALS['base_path'] . $lib;
+    // Add module js settings.
     drupal_add_js(array('views_reveal' => $settings), array('type' => 'setting'));
-// Add module js.
+    // Add module js.
     drupal_add_js($mod . '/js/views_reveal.js', array(
       'type' => 'file',
       'scope' => JS_DEFAULT,
       'weight' => 1,
     ));
-// Add presentation theme stylesheet.
+    // Add presentation theme stylesheet.
     drupal_add_css($lib . '/css/theme/' . $options['theme'] . '.css', array(
       'type' => 'file',
       'scope' => CSS_DEFAULT,
@@ -147,7 +145,7 @@ function views_reveal_get_settings($array) {
  */
 function views_reveal_dependencies($settings) {
   $depend = array();
-  if ($settings['classList'] === true) {
+  if ($settings['classList'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/lib/js/classList.js',
       'condition' => "function () {
@@ -155,7 +153,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['markdown'] === true) {
+  if ($settings['markdown'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/markdown/marked.js',
       'async' => TRUE,
@@ -171,7 +169,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['highlight'] === true) {
+  if ($settings['highlight'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/highlight/highlight.js',
       'async' => TRUE,
@@ -180,7 +178,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['zoom'] === true) {
+  if ($settings['zoom'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/zoom-js/zoom.js',
       'async' => TRUE,
@@ -189,7 +187,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['notes'] === true) {
+  if ($settings['notes'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/notes/notes.js',
       'async' => TRUE,
@@ -198,7 +196,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['remotes'] === true) {
+  if ($settings['remotes'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/remotes/remotes.js',
       'async' => TRUE,
@@ -207,7 +205,7 @@ function views_reveal_dependencies($settings) {
       }",
     );
   }
-  if ($settings['math'] === true) {
+  if ($settings['math'] === TRUE) {
     $depend[] = array(
       'src' => $settings['lib'] . '/plugin/math/math.js',
       'async' => TRUE,
@@ -227,25 +225,16 @@ function views_reveal_help($path, $arg) {
   switch ($path) {
 
     case 'admin/help#views_reveal':
-      $output .= '<p>' . t('The Views Reveal module provides the ability to '
-      . 'create Reveal.js presentations using fields from Views.') . '</p>';
+      $output .= '<p>' . t('The Views Reveal module provides the ability to create Reveal.js presentations using fields from Views.') . '</p>';
       $output .= '<h2>' . t('Views integration') . '</h2>';
       $output .= '<p>';
-      $output .= t('Configuration options for Views Reveal are accessible '
-      . 'through Views Format Settings. ');
+      $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings. ');
 
       if (module_exists('views_ui')) {
-        $output .= t('You may configure a new view through the '
-        . '<a href="!views-url">Views module interface</a>. '
-        . 'After adding a new view, change the format of the display style '
-        . 'to "Reveal Presentation" and configure the Settings. ');
+        $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.');
       }
       else {
-        $output .= t('This site not have Views (or the Views UI module) '
-        . 'installed currently. You may be able to turn on this module under '
-        . 'your site\'s <a href="!modules-url">module page</a>, or you may '
-        . 'have to <a href="http://drupal.org/project/views">download Views '
-        . 'module</a> and install it.', array('!modules-url' => url('admin/modules')));
+        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/modules')));
       }
       $output .= '</p>';
 

@@ -2,6 +2,7 @@
  * @file
  * JS initialization for Views_Reveal.
  */
+
 (function ($) {
   Drupal.behaviors.views_reveal = {
     attach: function (context, settings) {

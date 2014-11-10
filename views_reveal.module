@@ -26,11 +26,16 @@ function views_reveal_libraries_info() {
     'name' => 'RevealJS',
     'vendor url' => 'http://lab.hakim.se/reveal-js/',
     'download url' => 'https://github.com/hakimel/reveal.js',
-    'version callback' => '_reveal_version',
+    'version callback' => 'views_reveal_version',
     'files' => array(
       'js' => array(
-        'reveal.min.js',
+        'lib/js/head.min.js',
+        'lib/js/html5shiv.js',
+        'js/reveal.min.js',
       ),
+      'css' => arraY(
+        'css/reveal.css',
+      )
     ),
   );
 
@@ -38,29 +43,42 @@ function views_reveal_libraries_info() {
 }
 
 /**
- *
-  function views_reveal_library() {
-  $libraries = array();
-  $library_path = libraries_get_path('reveal');
-  }
- */
-
-/**
  * Versioning info for library.
  */
-function views_reveal_version() {
-  // Short-circuit the version argument requirement.
-  return TRUE;
+function views_reveal_version($library) {
+  return '2.6.2';
 }
 
 /**
- * Implements hook_init().
+ * Implements hook_theme().
  */
-function views_reveal_init() {
+function views_reveal_theme($existing, $type, $theme, $path) {
+  $themes['views_reveal'] = array(
+    'base hook' => 'page',
+    'render element' => 'page',
+    'template' => 'inc/page--reveal',
+    'override preprocess functions' => TRUE,
+    'preprocess functions' => array(
+      'template_preprocess',
+      'template_preprocess_page',
+      'template_preprocess_views_view_reveal',
+    ),
+  );
 
-  //dpm(variable_get('views_reveal_theme'));
-  //libraries_load('reveal');
-  //dpm(libraries_get_libraries());
+  return $themes;
+}
+
+/**
+ * Implements hook_theme_preprocess_page().
+ */
+function views_reveal_preprocess_page(&$vars) {
+  //$vars['directory'] = drupal_get_path('module', 'views_reveal');
+  $view = views_get_page_view();
+  if (!empty($view)) {
+    if ($view->style_plugin->plugin_name === 'reveal') {
+      $vars['theme_hook_suggestions'][] = 'views_reveal';
+    }
+  }
 }
 
 /**
@@ -71,58 +89,134 @@ function views_reveal_init() {
   //hook_views_pre_view(&$view, &$display_id, &$args)
  */
 function template_preprocess_views_view_reveal(&$vars) {
-  //dpm($vars);
-  $view = $vars['view'];
-  $result = $view->result;
-  $handler = $view->style_plugin;
-  $lib = libraries_get_path('reveal');
-  $options = views_reveal_get_settings($view->style_plugin->options);
-
-  /*
-  drupal_add_css($lib . '/css/reveal.css', array(
-    'type' => 'file',
-    'scope' => CSS_DEFAULT,
-    'weight' => 0,
-  ));
-*/
-  drupal_add_css($lib . '/css/theme/' . $options['theme'] . 'css', array(
-    'type' => 'file',
-    'scope' => CSS_DEFAULT,
-    'weight' => 0,
-  ));
-
-  drupal_add_js($lib . '/js/reveal.min.js', array(
-    'type' => 'file',
-    'scope' => JS_DEFAULT,
-    'weight' => 0,
-  ));
-  drupal_add_js(drupal_get_path('module', 'views_reveal') . '/js/views_reveal.js', array(
-    'type' => 'file',
-    'scope' => JS_DEFAULT,
-    'weight' => 1,
-  ));
-  // Add Reveal JS settings.
-  drupal_add_js(array('views_reveal' => $options), array(
-    'type' => 'setting',
-    'scope' => JS_DEFAULT
-  ));
+// Script/styles breaks Views UI- don't add to admin.
+  if (!strstr($_GET['q'], 'admin')) {
+    /**/
+    $view = $vars['view'];
+    $mod = drupal_get_path('module', 'views_reveal');
+    $lib = libraries_get_path('reveal');
+    $options = views_reveal_get_settings($view->style_plugin->options);
+    /**/
+// Load library js & css.
+    libraries_load('reveal');
+// Add Reveal JS settings.
+    $settings = $options;
+    $settings['lib'] = $GLOBALS['base_path'] . $lib;
+    // $settings['dependencies'] = views_reveal_dependencies($settings);
+// Add module js settings.
+    drupal_add_js(array('views_reveal' => $settings), array('type' => 'setting'));
+// Add module js.
+    drupal_add_js($mod . '/js/views_reveal.js', array(
+      'type' => 'file',
+      'scope' => JS_DEFAULT,
+      'weight' => 1,
+    ));
+// Add presentation theme stylesheet.
+    drupal_add_css($lib . '/css/theme/' . $options['theme'] . '.css', array(
+      'type' => 'file',
+      'scope' => CSS_DEFAULT,
+      'weight' => 0,
+    ));
+  }
 }
 
 /**
- * Get plugin settings.
+ * Configure plugin settings for js and flatten array.
  */
 function views_reveal_get_settings($array) {
   $options = array();
-  foreach ($array as $key => $value) {
-    if (!is_array($value)) {
-      $options[$key] = $value;
+  foreach ($array as $key => $val) {
+    if (!is_array($val)) {
+      if ($val === "0" || $val === "1") {
+        $options[$key] = !!$val;
+      }
+      else {
+        $options[$key] = $val;
+      }
     }
     else {
-      $options = array_merge($options, views_reveal_get_settings($value));
+      $options = array_merge($options, views_reveal_get_settings($val));
     }
   }
 
   return $options;
+}
+
+/**
+ * Javascript based on plugin dependencies.
+ */
+function views_reveal_dependencies($settings) {
+  $depend = array();
+  if ($settings['classList'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/lib/js/classList.js',
+      'condition' => "function () {
+        return !document . body . classList;
+      }",
+    );
+  }
+  if ($settings['markdown'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/markdown/marked.js',
+      'async' => TRUE,
+      'condition' => "function () {
+        return !!document . querySelector('[data-markdown]');
+      }",
+    );
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/markdown/markdown.js',
+      'async' => TRUE,
+      'condition' => "function () {
+        return !!document . querySelector('[data-markdown]');
+      }",
+    );
+  }
+  if ($settings['highlight'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/highlight/highlight.js',
+      'async' => TRUE,
+      'callback' => "function () {
+        hljs . initHighlightingOnLoad();
+      }",
+    );
+  }
+  if ($settings['zoom'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/zoom-js/zoom.js',
+      'async' => TRUE,
+      'condition' => "function () {
+        return !!document . body . classList;
+      }",
+    );
+  }
+  if ($settings['notes'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/notes/notes.js',
+      'async' => TRUE,
+      'condition' => "function () {
+        return !!document . body . classList;
+      }",
+    );
+  }
+  if ($settings['remotes'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/remotes/remotes.js',
+      'async' => TRUE,
+      'condition' => "function () {
+        return !!document . body . classList;
+      }",
+    );
+  }
+  if ($settings['math'] === true) {
+    $depend[] = array(
+      'src' => $settings['lib'] . '/plugin/math/math.js',
+      'async' => TRUE,
+    );
+  }
+
+  $json = json_encode($depend, JSON_UNESCAPED_SLASHES);
+
+  return $json;
 }
 
 /**

@@ -23,7 +23,6 @@ class views_reveal_style_plugin extends views_plugin_style {
     $options['minScale'] = array('default' => 1.0);
     $options['maxScale'] = array('default' => 1.0);
 
-
     $options['theme'] = array('default' => 'default');
     $options['controls'] = array('default' => TRUE);
     $options['progress'] = array('default' => TRUE);
@@ -306,7 +305,6 @@ class views_reveal_style_plugin extends views_plugin_style {
       '#options' => $bool,
       '#description' => t('Enable keyboard shortcuts for navigation.'),
     );
-
 
     $form['control']['center'] = array(
       '#type' => 'radios',

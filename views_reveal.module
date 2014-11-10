@@ -86,8 +86,8 @@ function views_reveal_preprocess_page(&$vars) {
  * @param array $vars
  *   Array of template variables.
  */
-function template_preprocess_views_view_reveal(&$vars) {
-// Script/styles breaks Views UI- don't add to admin.
+function template_preprocess_views_view_reveal(array &$vars) {
+  // Script/styles break Views UI- don't add to admin pages.
   if (!strstr($_GET['q'], 'admin')) {
     /**/
     $view = $vars['view'];

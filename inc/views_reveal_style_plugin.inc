@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Configures the Reveal.js style plugin for Views.
+ * Configuration of Reveal.js style plugin.
  */
 
 /**
@@ -9,19 +9,20 @@
  *
  * @ingroup views_style_plugins
  */
-class views_reveal_style_plugin extends views_plugin_style {
+class views_reveal_style_plugin extends views_plugin_style
+{
 
   /**
    * Views Reveal options.
    */
-  function option_definition() {
+  public function option_definition() {
     $options = parent::option_definition();
 
-$options['width'] = array('default' => '100%');
-$options['height'] = array('default' => '100%');
-$options['margin'] = array('default' => 0.2);
-$options['minScale'] = array('default' => 1.0);
-$options['maxScale'] = array('default' => 1.0);
+    $options['width'] = array('default' => '100%');
+    $options['height'] = array('default' => '100%');
+    $options['margin'] = array('default' => 0.2);
+    $options['minScale'] = array('default' => 1.0);
+    $options['maxScale'] = array('default' => 1.0);
 
 
     $options['theme'] = array('default' => 'default');
@@ -48,23 +49,23 @@ $options['maxScale'] = array('default' => 1.0);
     $options['viewDistance'] = array('default' => 3);
     $options['parallaxBackgroundImage'] = array('default' => '');
     $options['parallaxBackgroundSize'] = array('default' => '');
-/*
-// Reveal.js dependencies.
-    $options['classList'] = array('default' => TRUE);
-    $options['markdown'] = array('default' => TRUE);
-    $options['highlight'] = array('default' => TRUE);
-    $options['zoom'] = array('default' => TRUE);
-    $options['notes'] = array('default' => TRUE);
-    $options['remotes'] = array('default' => TRUE);
-    $options['math'] = array('default' => TRUE);
-*/
+    /*
+      // Reveal.js dependencies.
+      $options['classList'] = array('default' => TRUE);
+      $options['markdown'] = array('default' => TRUE);
+      $options['highlight'] = array('default' => TRUE);
+      $options['zoom'] = array('default' => TRUE);
+      $options['notes'] = array('default' => TRUE);
+      $options['remotes'] = array('default' => TRUE);
+      $options['math'] = array('default' => TRUE);
+     */
     return $options;
   }
 
   /**
    * Views Reveal options form.
    */
-  function options_form(&$form, &$form_state) {
+  public function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
     //dpm($this);
     $options = views_reveal_get_settings($this->options);
@@ -100,12 +101,12 @@ $options['maxScale'] = array('default' => 1.0);
     ));
 
     /*
-    $form['display'] = array(
+      $form['display'] = array(
       '#type' => 'fieldset',
       '#title' => t('Display Options'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );*/
+      ); */
 
     $form['display']['theme'] = array(
       '#type' => 'select',
@@ -284,14 +285,14 @@ $options['maxScale'] = array('default' => 1.0);
       '#description' => t('Parallax background size, CSS syntax, e.g. "2100px 900px"'),
     );
 
-/*
-    $form['control'] = array(
+    /*
+      $form['control'] = array(
       '#type' => 'fieldset',
       '#title' => t('Control Options'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );*/
-    
+      ); */
+
     $form['control']['history'] = array(
       '#type' => 'radios',
       '#title' => t('History'),
@@ -382,13 +383,13 @@ $options['maxScale'] = array('default' => 1.0);
       '#description' => t('Enable slide navigation via mouse wheel.'),
     );
 
-/*
-    $form['plugins'] = array(
+    /*
+      $form['plugins'] = array(
       '#type' => 'fieldset',
       '#title' => t('Plugins'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );*/
+      ); */
 
     $form['plugins']['classList'] = array(
       '#type' => 'radios',
@@ -444,6 +445,6 @@ $options['maxScale'] = array('default' => 1.0);
       '#default_value' => $options['math'],
       '#options' => $bool,
     );
-    
   }
+
 }

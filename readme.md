@@ -1,9 +1,9 @@
 ##Create a Reveal.js Presentation using Views fields.
 
 ###Requirements
-[Views](https://www.drupal.org/project/views)
-[Libraries](https://www.drupal.org/project/libraries)
-[Reveal.js library](https://github.com/hakimel/reveal.js)
+- [Views](https://www.drupal.org/project/views)
+- [Libraries](https://www.drupal.org/project/libraries)
+- [Reveal.js library](https://github.com/hakimel/reveal.js)
 
 ###Setup
 1. Extract the Reveal.js library to $base_url/sites/all/libraries/reveal

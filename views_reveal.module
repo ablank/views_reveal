@@ -30,7 +30,6 @@ function views_reveal_libraries_info() {
     'files' => array(
       'js' => array(
         'lib/js/head.min.js',
-        'lib/js/html5shiv.js',
         'js/reveal.min.js',
       ),
       'css' => array(
@@ -93,28 +92,29 @@ function template_preprocess_views_view_reveal(array &$vars) {
     $view = $vars['view'];
     $mod = drupal_get_path('module', 'views_reveal');
     $lib = libraries_get_path('reveal');
-    $options = views_reveal_get_settings($view->style_plugin->options);
+    $settings = views_reveal_get_settings($view->style_plugin->options);
     /**/
     // Load library js & css.
     libraries_load('reveal');
-    // Add Reveal JS settings.
-    $settings = $options;
-    // $settings['dependencies'] = views_reveal_dependencies($settings);
+    // Add library path for async loading.
     $settings['lib'] = $GLOBALS['base_path'] . $lib;
     // Add module js settings.
-    drupal_add_js(array('views_reveal' => $settings), array('type' => 'setting'));
+    drupal_add_js(array('views_reveal' => views_reveal_json_encode($settings)), array('type' => 'setting'));
     // Add module js.
     drupal_add_js($mod . '/js/views_reveal.js', array(
       'type' => 'file',
       'scope' => JS_DEFAULT,
       'weight' => 1,
     ));
-    // Add presentation theme stylesheet.
-    drupal_add_css($lib . '/css/theme/' . $options['theme'] . '.css', array(
-      'type' => 'file',
-      'scope' => CSS_DEFAULT,
-      'weight' => 0,
-    ));
+    if (!empty($settings['theme'])) {
+      // Add presentation theme stylesheet.
+      drupal_add_css($lib . '/css/theme/' . $settings['theme'] . '.css', array(
+        'type' => 'file',
+        'scope' => CSS_DEFAULT,
+        'weight' => 0,
+      ));
+    }
+    // drupal_set_message(views_reveal_json_encode($settings));
   }
 }
 
@@ -141,78 +141,11 @@ function views_reveal_get_settings($array) {
 }
 
 /**
- * Javascript based on plugin dependencies.
+ * Format json.
  */
-function views_reveal_dependencies($settings) {
-  $depend = array();
-  if ($settings['classList'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/lib/js/classList.js',
-      'condition' => "function () {
-        return !document . body . classList;
-      }",
-    );
-  }
-  if ($settings['markdown'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/markdown/marked.js',
-      'async' => TRUE,
-      'condition' => "function () {
-        return !!document . querySelector('[data-markdown]');
-      }",
-    );
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/markdown/markdown.js',
-      'async' => TRUE,
-      'condition' => "function () {
-        return !!document . querySelector('[data-markdown]');
-      }",
-    );
-  }
-  if ($settings['highlight'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/highlight/highlight.js',
-      'async' => TRUE,
-      'callback' => "function () {
-        hljs . initHighlightingOnLoad();
-      }",
-    );
-  }
-  if ($settings['zoom'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/zoom-js/zoom.js',
-      'async' => TRUE,
-      'condition' => "function () {
-        return !!document . body . classList;
-      }",
-    );
-  }
-  if ($settings['notes'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/notes/notes.js',
-      'async' => TRUE,
-      'condition' => "function () {
-        return !!document . body . classList;
-      }",
-    );
-  }
-  if ($settings['remotes'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/remotes/remotes.js',
-      'async' => TRUE,
-      'condition' => "function () {
-        return !!document . body . classList;
-      }",
-    );
-  }
-  if ($settings['math'] === TRUE) {
-    $depend[] = array(
-      'src' => $settings['lib'] . '/plugin/math/math.js',
-      'async' => TRUE,
-    );
-  }
+function views_reveal_json_encode($settings) {
 
-  $json = json_encode($depend, JSON_UNESCAPED_SLASHES);
+  $json = json_encode($settings, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
   return $json;
 }

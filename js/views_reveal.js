@@ -6,27 +6,97 @@
 (function ($) {
   Drupal.behaviors.views_reveal = {
     attach: function (context, settings) {
-      var vr = Drupal.settings.views_reveal;
-      console.log(vr);
+      var vr = JSON.parse(Drupal.settings.views_reveal);
+      var depends = [
+        {
+          src: vr.lib + '/lib/js/html5shiv.js'
+        },
+        {
+          src: vr.lib + '/lib/js/classList.js'
+        }
+      ];
+
+      if (vr.markdown === true) {
+        depends.push({
+          src: vr.lib + '/plugin/markdown/marked.js',
+          condition: function () {
+            return !!document.querySelector('[data-markdown]');
+          }
+        },
+        {
+          src: vr.lib + '/plugin/markdown/markdown.js',
+          condition: function () {
+            return !!document.querySelector('[data-markdown]');
+          }
+        });
+      }
+      if (vr.zoom === true) {
+        depends.push({
+          src: vr.lib + '/plugin/zoom-js/zoom.js',
+          async: true,
+          condition: function () {
+            return !!document.body.classList;
+          }
+        });
+      }
+      if (vr.notes === true) {
+        depends.push({
+          src: vr.lib + '/plugin/notes/notes.js',
+          async: true,
+          condition: function () {
+            return !!document.body.classList;
+          }
+        });
+      }
+      if (vr.remotes === true) {
+        depends.push({
+          src: vr.lib + '/plugin/remotes/remotes.js',
+          async: true,
+          condition: function () {
+            return !!document.body.classList;
+          }
+        });
+      }
+      if (vr.highlight === true) {
+        depends.push({
+          src:  vr.lib + '/plugin/highlight/highlight.js',
+          async: true,
+          callback: function () {
+            hljs.initHighlightingOnLoad();
+          }
+        });
+      }
+      if (vr.search === true) {
+        depends.push({
+          src:  vr.lib + '/plugin/search/search.js',
+          async: true
+        });
+      }
+      if (vr.leap === true) {
+        depends.push({
+          src:  vr.lib + '/plugin/leap/leap.js',
+          async: true
+        });
+      }
+      if (vr.math === true) {
+        depends.push({
+          src: vr.lib + '/plugin/math/math.js',
+          async: true
+        });
+      }
+
       Reveal.initialize({
-        dependencies: [
-          // Cross-browser shim that fully implements classList.
-          {
-            src: vr.lib + '/lib/js/classList.js',
-            condition: function () {
-              return !document.body.classList;
-            }}
-        ],
+        dependencies: depends,
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
         width: vr.width,
         height: vr.height,
         // Factor of the display size that should remain empty around the content.
-        margin: parseFloat(vr.margin),
+        margin: vr.margin,
         // Bounds for smallest/largest possible scale to apply to content.
-        minScale: parseFloat(vr.minScale),
-        maxScale: parseFloat(vr.maxScale),
+        minScale: vr.minScale,
+        maxScale: vr.maxScale,
         // Display controls in the bottom right corner.
         controls: vr.controls,
         // Display a presentation progress bar.
@@ -79,7 +149,6 @@
         // Parallax background size using CSS syntax, e.g. "2100px 900px"
         parallaxBackgroundSize: vr.parallaxBackgroundSize
       });
-
     }
   };
 })(jQuery);

@@ -6,12 +6,17 @@
 
 ?>
 
-<div class="reveal <?php print $classes; ?>">
-  <div class="slides">
-      <?php foreach ($rows as $row_id => $row) : ?>
+<div class="<?php print $classes; ?>">
+  <div class="slides<?php
+      if (!empty($draggable)):
+        print " $draggable";
+      endif; ?>">
+
+    <?php foreach ($rows as $row_id => $row) : ?>
+      
       <section>
         <?php print $row; ?>
       </section>
-      <?php endforeach; ?>
+    <?php endforeach; ?>
   </div>
 </div>

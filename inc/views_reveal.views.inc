@@ -23,6 +23,13 @@ function views_reveal_views_plugins() {
     'uses grouping' => FALSE,
     'type' => 'normal',
   );
-
+  /*
+  $plugins['row']['reveal'] = array(
+    'handler' => 'views_reveal_row_plugin',
+    'path' => $inc,
+    //'theme' => 'views_view_reveal_row',
+    //'theme path' => $inc,
+  );
+  */
   return $plugin;
 }

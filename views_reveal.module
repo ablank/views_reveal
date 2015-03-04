@@ -48,8 +48,6 @@ function views_reveal_version($library) {
   return '2.6.2';
 }
 
-
-
 /**
  * Implements hook_theme().
  */
@@ -89,14 +87,14 @@ function views_reveal_preprocess_page(&$vars) {
  */
 function template_preprocess_views_view_reveal(&$vars) {
   $view = $vars['view'];
-  
+
   $vars['classes_array'][] = 'reveal';
-  // Enable draggable admin interface.
+  // Script/styles break Views UI- don't add to admin pages.
   if (path_is_admin(current_path())) {
-    module_exists('draggableviews') ? views_reveal_draggable($vars) : NULL;
+
   }
   else {
-    // Script/styles break Views UI- don't add to admin pages.
+    // Add scripts/styles
     views_reveal_assets($view);
   }
 }
@@ -138,38 +136,16 @@ function views_reveal_assets(&$view) {
 }
 
 /**
- * Integrate DraggableViews
- *
- * @param array $vars
+ * Implements hook_css_alter().
  */
-function views_reveal_draggable(&$vars) {
-  $view = $vars['view'];
-  // Check whether this table view has draggableview field.
-  if (!isset($view->field['draggableviews'])) {
-    return;
+function views_reveal_css_alter(&$vars) {
+  // Override draggableViews list stylesheet for better UI.
+  if (module_exists('draggableviews') && user_access('access draggableviews')) {
+    $dv = drupal_get_path('module', 'draggableviews') . '/css/draggableviews_list.css';
+    if (isset($vars[$dv])) {
+      $vars[$dv]['data'] = drupal_get_path('module', 'views_reveal') . '/inc/admin/draggableviews_reveal.css';
+    }
   }
-
-  // Check permissions.
-  if (!user_access('access draggableviews')) {
-    return;
-  }
-  
-  //dpm($view);
-  // Add class to parent item of the view.
-  // Add class to ul item of the view.
-  $class = 'draggableviews-grid-' . $vars['view']->name . '-' . $vars['view']->current_display;
-  $vars['draggable'] = $class;
-  
-  // Add setting of the row class.
-  $js_settings = array('draggableviews_row_class' => $class);
-  // Add setting whether ajax enabled or not.
-  $js_settings['draggableviews_ajax'] = $view->field['draggableviews']->options['draggableviews']['ajax'];
-  // Add javascript.
-  drupal_add_library('system', 'ui.sortable');
-  drupal_add_js($js_settings, 'setting');
-  // Add custom js and css.
-  drupal_add_js(drupal_get_path('module', 'views_reveal') . '/inc/admin/draggableviews_reveal.js');
-  drupal_add_css(drupal_get_path('module', 'views_reveal') . '/inc/admin/draggableviews_reveal.css');
 }
 
 /**

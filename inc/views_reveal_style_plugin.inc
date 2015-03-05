@@ -142,7 +142,7 @@ class views_reveal_style_plugin extends views_plugin_style {
     );
 
     $form['display']['transitionSpeed'] = array(
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => t('Transition Speed'),
       '#default_value' => $options['transitionSpeed'],
       '#options' => array(

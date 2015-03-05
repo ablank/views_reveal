@@ -45,6 +45,7 @@ function views_reveal_libraries_info() {
  * Versioning info for library.
  */
 function views_reveal_version($library) {
+
   return '2.6.2';
 }
 
@@ -89,14 +90,9 @@ function template_preprocess_views_view_reveal(&$vars) {
   $view = $vars['view'];
 
   $vars['classes_array'][] = 'reveal';
-  // Script/styles break Views UI- don't add to admin pages.
-  if (path_is_admin(current_path())) {
 
-  }
-  else {
-    // Add scripts/styles
-    views_reveal_assets($view);
-  }
+// Script/styles break Views UI- don't add to admin pages.
+  path_is_admin(current_path()) ? NULL : views_reveal_assets($view);
 }
 
 /**
@@ -110,22 +106,22 @@ function views_reveal_assets(&$view) {
   $mod = drupal_get_path('module', 'views_reveal');
   $lib = libraries_get_path('reveal');
   $settings = views_reveal_get_settings($view->style_plugin->options);
-  // Add library path for async loading.
+// Add library path to settings for async loading from front-end.
   $settings['lib'] = $GLOBALS['base_path'] . $lib;
   /**/
-  // Load library js & css.
+// Load library js & css.
   libraries_load('reveal');
-  // Add module js settings.
+// Add module js settings.
   drupal_add_js(array('views_reveal' => views_reveal_json_encode($settings)), array(
     'type' => 'setting',
   ));
-  // Add module js.
+// Add module js.
   drupal_add_js($mod . '/js/views_reveal.js', array(
     'type' => 'file',
     'scope' => JS_DEFAULT,
     'weight' => 1,
   ));
-  // Add presentation theme stylesheet.
+// Add presentation theme stylesheet based on settings.
   if (!empty($settings['theme'])) {
     drupal_add_css($lib . '/css/theme/' . $settings['theme'] . '.css', array(
       'type' => 'file',
@@ -139,8 +135,8 @@ function views_reveal_assets(&$view) {
  * Implements hook_css_alter().
  */
 function views_reveal_css_alter(&$vars) {
-  // Override draggableViews list stylesheet for better UI.
-  if (module_exists('draggableviews') && user_access('access draggableviews')) {
+// Override draggableViews list stylesheet for better admin UI.
+  if (module_exists('draggableviews') && user_access('access draggableviews')) {    
     $dv = drupal_get_path('module', 'draggableviews') . '/css/draggableviews_list.css';
     if (isset($vars[$dv])) {
       $vars[$dv]['data'] = drupal_get_path('module', 'views_reveal') . '/inc/admin/draggableviews_reveal.css';
@@ -175,13 +171,14 @@ function views_reveal_get_settings($array) {
  */
 function views_reveal_json_encode($settings) {
 
-  $json = json_encode($settings, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+  $json = json_encode
+  ($settings, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
   return $json;
 }
 
 /**
- * Implements hook_help().
+ * Imp lements  hook_help().
  */
 function views_reveal_help($path, $arg) {
   $output = '';
@@ -197,7 +194,9 @@ function views_reveal_help($path, $arg) {
         $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.');
       }
       else {
-        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/modules')));
+        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url
+          ('admin/modules'
+        )));
       }
       $output .= '</p>';
 

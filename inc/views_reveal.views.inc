@@ -23,6 +23,6 @@ function views_reveal_views_plugins() {
     'uses grouping' => FALSE,
     'type' => 'normal',
   );
-  
+
   return $plugin;
 }

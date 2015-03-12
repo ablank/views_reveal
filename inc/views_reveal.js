@@ -149,7 +149,7 @@
         // Parallax background size using CSS syntax, e.g. "2100px 900px"
         parallaxBackgroundSize: vr.parallaxBackgroundSize
       });
-      
+
     }
   };
 })(jQuery);

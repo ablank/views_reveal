@@ -159,8 +159,6 @@ function views_reveal_js_alter(array &$vars) {
 }
  */
 
-
-
 /**
  * Configure plugin settings for js and flatten array.
  */

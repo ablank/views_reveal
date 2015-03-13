@@ -1,16 +1,11 @@
-A friend who isn't too computer savvy (at least not good with Powerpoint...)
- needed to do a presentation, I suggested we just Drupal it as a Reveal.js
-presentation and I would send her the link...
-Sadly there wasn't a (working) module available, so I wrote this Views Plugin
-to easily create and style (theme, transition, etc.) Reveal.js presentations
-using the Views module to filter and structure content (by taxonomy term,
-created by user, etc.) for inclusion in the presentation.
+Easily create, style, and manage Reveal.js presentations.
 
 ##Create a Reveal.js Presentation using Views fields.
 
 ###Requirements
-- [Views](https://www.drupal.org/project/views)
 - [Libraries](https://www.drupal.org/project/libraries)
+- [Views](https://www.drupal.org/project/views)
+- [Draggable Views](https://www.drupal.org/project/draggableviews)
 - [Reveal.js library](https://github.com/ablank/reveal.js) || https://github.com/hakimel/reveal.js
 
 ###Setup

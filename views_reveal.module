@@ -145,21 +145,6 @@ function views_reveal_css_alter(array &$vars) {
 }
 
 /**
- * Implements hook_js_alter().
- *
- * @param array $vars
-function views_reveal_js_alter(array &$vars) {
-  if (module_exists('draggableviews') && user_access('access draggableviews')) {
-    dpm($vars);
-    $dv = drupal_get_path('module', 'draggableviews') . '/js/draggableviews_list.js';
-    if (!empty($vars[$dv])) {
-      $vars[$dv]['data'] = drupal_get_path('module', 'views_reveal') . '/admin/draggableviews_list_reveal.js';
-    }
-  }
-}
- */
-
-/**
  * Configure plugin settings for js and flatten array.
  */
 function views_reveal_get_settings(array $array) {

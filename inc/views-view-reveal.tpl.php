@@ -12,8 +12,7 @@
         print " $draggable";
       endif; ?>">
 
-    <?php foreach ($rows as $row_id => $row) : ?>
-      
+    <?php foreach ($rows as $row_id => $row) : ?> 
       <section>
         <?php print $row; ?>
       </section>

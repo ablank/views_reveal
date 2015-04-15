@@ -6,6 +6,8 @@
 
 /**
  * Implements hook_views_api().
+ *
+ * @return array
  */
 function views_reveal_views_api() {
   $inc = drupal_get_path('module', 'views_reveal') . '/inc';
@@ -19,6 +21,8 @@ function views_reveal_views_api() {
 
 /**
  * Implements hook_libraries_info().
+ *
+ * @return array
  */
 function views_reveal_libraries_info() {
 
@@ -43,14 +47,23 @@ function views_reveal_libraries_info() {
 
 /**
  * Versioning info for library.
+ *
+ * @return string
  */
-function views_reveal_version($library) {
+function views_reveal_version() {
 
   return '2.6.2';
 }
 
 /**
  * Implements hook_theme().
+ *
+ * @param array $existing
+ * @param string $type
+ * @param string $theme
+ * @param string $path
+ *
+ * @return array
  */
 function views_reveal_theme($existing, $type, $theme, $path) {
   $themes['views_reveal'] = array(
@@ -70,8 +83,10 @@ function views_reveal_theme($existing, $type, $theme, $path) {
 
 /**
  * Implements hook_theme_preprocess_page().
+ *
+ * @param array $vars
  */
-function views_reveal_preprocess_page(array &$vars) {
+function views_reveal_preprocess_page(&$vars) {
   $view = views_get_page_view();
   if (!empty($view)) {
     if ($view->style_plugin->plugin_name === 'reveal') {
@@ -86,7 +101,7 @@ function views_reveal_preprocess_page(array &$vars) {
  * @param array $vars
  *   Array of template variables.
  */
-function template_preprocess_views_view_reveal(array &$vars) {
+function template_preprocess_views_view_reveal(&$vars) {
   $view = $vars['view'];
 
   $vars['classes_array'][] = 'reveal';
@@ -133,8 +148,10 @@ function views_reveal_assets(&$view) {
 
 /**
  * Implements hook_css_alter().
+ *
+ * @param array $vars
  */
-function views_reveal_css_alter(array &$vars) {
+function views_reveal_css_alter(&$vars) {
 // Override draggableViews list stylesheet for better UI.
   if (module_exists('draggableviews') && user_access('access draggableviews')) {
     $dv = drupal_get_path('module', 'draggableviews') . '/css/draggableviews_list.css';
@@ -145,24 +162,13 @@ function views_reveal_css_alter(array &$vars) {
 }
 
 /**
- * Implements hook_js_alter().
- *
- * @param array $vars
-function views_reveal_js_alter(array &$vars) {
-  if (module_exists('draggableviews') && user_access('access draggableviews')) {
-    dpm($vars);
-    $dv = drupal_get_path('module', 'draggableviews') . '/js/draggableviews_list.js';
-    if (!empty($vars[$dv])) {
-      $vars[$dv]['data'] = drupal_get_path('module', 'views_reveal') . '/admin/draggableviews_list_reveal.js';
-    }
-  }
-}
- */
-
-/**
  * Configure plugin settings for js and flatten array.
+ *
+ * @param array $array
+ *
+ * @return array
  */
-function views_reveal_get_settings(array $array) {
+function views_reveal_get_settings($array) {
   $options = array();
   foreach ($array as $key => $val) {
     if (!is_array($val)) {
@@ -185,21 +191,22 @@ function views_reveal_get_settings(array $array) {
  * Format json.
  *
  * @param array $settings
+ *
  * @return string
  */
 function views_reveal_json_encode($settings) {
 
-  $json = json_encode
-  ($settings, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+  $json = json_encode($settings, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
   return $json;
 }
 
 /**
- * Imp lements  hook_help().
+ * Implements hook_help().
  *
- * @param type $path
- * @param type $arg
+ * @param string $path
+ * @param array $arg
+ *
  * @return string
  */
 function views_reveal_help($path, $arg) {
@@ -210,7 +217,7 @@ function views_reveal_help($path, $arg) {
       $output .= '<p>' . t('The Views Reveal module provides the ability to create Reveal.js presentations using fields from Views.') . '</p>';
       $output .= '<h2>' . t('Views integration') . '</h2>';
       $output .= '<p>';
-      $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings. ');
+      $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
 
       if (module_exists('views_ui')) {
         $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.');

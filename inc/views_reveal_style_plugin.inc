@@ -97,7 +97,6 @@ class views_reveal_style_plugin extends views_plugin_style {
       0.9,
       1.0,
     ));
-    /**/
 
     $form['display'] = array(
       '#type' => 'fieldset',

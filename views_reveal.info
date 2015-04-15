@@ -1,5 +1,5 @@
 name = Views Reveal
-description = Create a Reveal.js presentation using Views.
+description = "Create a Reveal.js presentation using Views."
 core = 7.x
 package = Views
 

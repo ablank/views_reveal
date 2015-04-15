@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Views reveal : Reveal.js presentations with a drag &amp; drop interface for managing slides.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Views reveal</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ablank/views_reveal">View on GitHub</a>
+
+          <h1 id="project_title">Views reveal</h1>
+          <h2 id="project_tagline">Reveal.js presentations with a drag &amp; drop interface for managing slides.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ablank/views_reveal/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ablank/views_reveal/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Reveal.js presentations are awesome.</p>
+
+<p>Drupal Views is awesome.</p>
+
+<p>Draggable Views is awesome</p>
+
+<p>Views_Reveal is awesome<sup>3</sup></p>
+
+<p>Easily create reveal.js presentations from content in a drupal database, style the presentation using settings in the Views UI, and arrange slides with a drag &amp; drop interface.</p>
+
+<h2>
+<a id="create-a-revealjs-presentation-using-views-fields" class="anchor" href="#create-a-revealjs-presentation-using-views-fields" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a Reveal.js Presentation using Views fields.</h2>
+
+<h3>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h3>
+
+<ul>
+<li><a href="https://www.drupal.org/project/libraries">Libraries</a></li>
+<li><a href="https://www.drupal.org/project/views">Views</a></li>
+<li><a href="https://www.drupal.org/project/draggableviews">Draggable Views</a></li>
+<li>
+<a href="https://github.com/ablank/reveal.js">Reveal.js</a> || (<a href="https://github.com/hakimel/reveal.js">https://github.com/hakimel/reveal.js</a>)</li>
+</ul>
+
+<h3>
+<a id="basic-setup" class="anchor" href="#basic-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Setup</h3>
+
+<ol>
+<li>Extract the Reveal.js library to $base_url/sites/all(OR sitename)/libraries/reveal</li>
+<li>Enable the Views Reveal module and its dependencies (Libraries, Views, DraggableViews).</li>
+<li>Navigate to <code>/admin/structure/views/view/reveal_presentation/edit</code> and add/edit/remove parameters.</li>
+</ol>
+
+<h2>
+<a id="-or-" class="anchor" href="#-or-" aria-hidden="true"><span class="octicon octicon-link"></span></a>-OR-</h2>
+
+<h3>
+<a id="setup-from-scratch" class="anchor" href="#setup-from-scratch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup from Scratch</h3>
+
+<ol>
+<li>Create a new View Page display:</li>
+<li><p>Page title: Title of your presentation</p></li>
+</ol>
+
+<ul>
+<li><p>Path: Whatever</p></li>
+<li><p>Display format: [Reveal Presentation] of [fields] [without links] [without comments]- 
+I prefer these settings and adding fields as needed, but you can really use 
+whatever content display you like, as long as it is a [Reveal Presentation]</p></li>
+<li><p>Items to display: NULL (as in leave empty - this will display all items)</p></li>
+<li><p><em>Do not</em> Use a pager</p></li>
+<li><p>At this point the presentation is basically functional.
+Save &amp; exit or Continue &amp; edit the View.</p></li>
+</ul>
+
+<ol>
+<li><p>Filter the content by whatever criteria you like- taxonomy terms are an easy
+way to flag content for inclusion in the presentation, but you can use whatever
+filtering method you prefer (Contextual, Content type, etc.) to include content
+in the presentation.</p></li>
+</ol>
+
+<ul>
+<li><p>The content preview is useful for seeing the content that will be displayed,
+but to view the presentation you must navigate to the page path.</p></li>
+</ul>
+
+<ol>
+<li><p>Change the FORMAT Settings (set the theme, transitions, etc.) of the Reveal
+Presentation. Or don't if you like the default settings- do what you want, it's
+your show =)</p></li>
+</ol>
+
+<ul>
+<li>
+<p>Your site theme may interfere with the reveal.js presentation style. If that
+happens check the </p> styles and override them as needed.</li>
+</ul>
+
+<ol>
+<li><p>After the content has been filtered and formatted, You should probably Save
+the View ...</p></li>
+<li><p>Navigate to the page path to view your presentation. Present. Enjoy!</p></li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Views reveal maintained by <a href="https://github.com/ablank">ablank</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

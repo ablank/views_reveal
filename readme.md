@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Reveal.js presentations are awesome.
 
 Drupal Views is awesome.
@@ -6,13 +5,6 @@ Drupal Views is awesome.
 Draggable Views is awesome
 
 Views_Reveal is awesome<sup>3</sup>
-=======
-Reveal.js presentations are {fucking awesome}.
-
-Drupal Views are {fucking awesome}. 
-
-Views_Reveal is {fucking awesome}<sup>2</sup>
->>>>>>> d78480cc98a03b47f26253980d2390b0f36a4909
 
 Easily create reveal.js presentations from content in a drupal database, style the presentation using settings in the Views UI, and arrange slides with a drag & drop interface.
 
@@ -26,11 +18,6 @@ Easily create reveal.js presentations from content in a drupal database, style t
 
 ### Basic Setup
 
-<<<<<<< HEAD
-=======
-### Basic Setup
-
->>>>>>> d78480cc98a03b47f26253980d2390b0f36a4909
 1. Extract the Reveal.js library to $base_url/sites/all(OR sitename)/libraries/reveal
 2. Enable the Views Reveal module and its dependencies (Libraries, Views, DraggableViews).
 3. Navigate to `/admin/structure/views/view/reveal_presentation/edit` and add/edit/remove parameters.

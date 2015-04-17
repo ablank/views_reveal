@@ -131,7 +131,7 @@ function views_reveal_assets(&$view) {
     'type' => 'setting',
   ));
 // Add module js.
-  drupal_add_js($mod . '/inc/views_reveal.js', array(
+  drupal_add_js($mod . '/inc/views_reveal.min.js', array(
     'type' => 'file',
     'scope' => JS_DEFAULT,
     'weight' => 1,

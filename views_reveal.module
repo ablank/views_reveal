@@ -117,13 +117,13 @@ function template_preprocess_views_view_reveal(&$vars) {
  *  The active View object.
  */
 function views_reveal_assets(&$view) {
-  /**/
+
   $mod = drupal_get_path('module', 'views_reveal');
   $lib = libraries_get_path('reveal');
   $settings = views_reveal_get_settings($view->style_plugin->options);
 // Add library path to settings for async loading from front-end.
   $settings['lib'] = $GLOBALS['base_path'] . $lib;
-  /**/
+  
 // Load library js & css.
   libraries_load('reveal');
 // Add module js settings.
@@ -220,12 +220,10 @@ function views_reveal_help($path, $arg) {
       $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
 
       if (module_exists('views_ui')) {
-        $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.');
+        $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.', array('!views-url' => url('admin/structure/views')));
       }
       else {
-        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url
-          ('admin/modules'
-        )));
+        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/modules')));
       }
       $output .= '</p>';
 

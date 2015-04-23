@@ -110,7 +110,7 @@ function views_reveal_assets(&$view) {
   $settings = views_reveal_get_settings($view->style_plugin->options);
 // Add library path to settings for async loading from front-end.
   $settings['lib'] = $GLOBALS['base_path'] . $lib;
-  
+
 // Load library js & css.
   libraries_load('reveal');
 // Add module js settings.
@@ -211,9 +211,9 @@ function views_reveal_help($path, $arg) {
       $output .= '<p>';
       $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
       $output .= '</p>';
-      $output .= '<img alt="Views Format Settings" src="'.  file_create_url(drupal_get_path('module', 'views_reveal').'/admin/help_format.jpg') .'" width=440 height=380 />';
-      $output .= '<img alt="Views Reveal Settings" src="'.  file_create_url(drupal_get_path('module', 'views_reveal').'/admin/help_format_settings.jpg') .'" width=440 height=380 />';
-      
+      $output .= '<img alt="Views Format Settings" src="' . file_create_url(drupal_get_path('module', 'views_reveal') . '/admin/help_format.jpg') . '" width=440 height=380 />';
+      $output .= '<img alt="Views Reveal Settings" src="' . file_create_url(drupal_get_path('module', 'views_reveal') . '/admin/help_format_settings.jpg') . '" width=440 height=380 />';
+
       return $output;
   }
 }

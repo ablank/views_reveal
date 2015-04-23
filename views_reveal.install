@@ -8,7 +8,8 @@
  * Implements hook_module_enable().
  */
 function views_reveal_enable(){
-  if(empty(libraries_get_path('reveal'))){
+  $lib = libraries_get_path('reveal');
+  if(empty($lib)){
     drupal_set_message('<h3>'.
     t('The <a href=@revealjs>Reveal.js library</a> is required to use this module.', array('@revealjs' => 'https://github.com/hakimel/reveal.js'))
     .'</h3>', 'warning');

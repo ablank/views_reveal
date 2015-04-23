@@ -198,19 +198,22 @@ function views_reveal_help($path, $arg) {
   switch ($path) {
 
     case 'admin/help#views_reveal':
-      $output .= '<p>' . t('The Views Reveal module provides the ability to create Reveal.js presentations using fields from Views.') . '</p>';
+      $output .= '<p>' . t('The Views Reveal module provides the ability to create Reveal.js presentations using content from Views.') . '</p>';
       $output .= '<h2>' . t('Views integration') . '</h2>';
       $output .= '<p>';
-      $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
-
       if (module_exists('views_ui')) {
-        $output .= t('Clone or modify the "Reveal Presentation Starter" View and configure the format settings. You may configure a new view through the <a href="!views-url">Views module interface</a>.', array('!views-url' => url('admin/structure/views')));
+        $output .= t('Clone or modify the <a href="!views_reveal">Reveal Presentation Starter</a> for a quick start, or <a href="!views-url">create a new view page</a> with the "Reveal Presentation" display format.', array('!views_reveal' => url('/admin/structure/views/view/reveal_presentation/edit'), '!views-url' => url('admin/structure/views')));
       }
       else {
-        $output .= t('Views UI is not enabled, and is needed to modify the Presentation Settings. You may need to <a href="@views">install the Views module</a> or enable the Views UI from your site\'s <a href="!modules-url">module page</a>.', array('!modules-url' => url('admin/modules'), '@views' => 'http://drupal.org/project/views'));
+        $output .= t('Views UI is not enabled, and is needed to modify the Presentation Settings. You may need to <a href="@views">install the Views module</a> or <a href="!modules-url">enable the Views UI module</a>.', array('!modules-url' => url('admin/modules'), '@views' => 'http://drupal.org/project/views'));
       }
       $output .= '</p>';
-
+      $output .= '<p>';
+      $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
+      $output .= '</p>';
+      $output .= '<img alt="Views Format Settings" src="'.  file_create_url(drupal_get_path('module', 'views_reveal').'/admin/help_format.jpg') .'" width=440 height=380 />';
+      $output .= '<img alt="Views Reveal Settings" src="'.  file_create_url(drupal_get_path('module', 'views_reveal').'/admin/help_format_settings.jpg') .'" width=440 height=380 />';
+      
       return $output;
   }
 }

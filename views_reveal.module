@@ -204,10 +204,10 @@ function views_reveal_help($path, $arg) {
       $output .= t('Configuration options for Views Reveal are accessible through Views Format Settings.');
 
       if (module_exists('views_ui')) {
-        $output .= t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change the format of the display style to "Reveal Presentation" and configure the Settings.', array('!views-url' => url('admin/structure/views')));
+        $output .= t('Clone or modify the "Reveal Presentation Starter" View and configure the format settings. You may configure a new view through the <a href="!views-url">Views module interface</a>.', array('!views-url' => url('admin/structure/views')));
       }
       else {
-        $output .= t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/modules')));
+        $output .= t('Views UI is not enabled, and is needed to modify the Presentation Settings. You may need to <a href="@views">install the Views module</a> or enable the Views UI from your site\'s <a href="!modules-url">module page</a>.', array('!modules-url' => url('admin/modules'), '@views' => 'http://drupal.org/project/views'));
       }
       $output .= '</p>';
 

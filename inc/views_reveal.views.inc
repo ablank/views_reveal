@@ -6,8 +6,6 @@
 
 /**
  * Implements hook_views_plugins().
- *
- * @return array
  */
 function views_reveal_views_plugins() {
   $inc = drupal_get_path('module', 'views_reveal') . '/inc';

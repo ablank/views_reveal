@@ -6,8 +6,6 @@
 
 /**
  * Implements hook_views_api().
- *
- * @return array
  */
 function views_reveal_views_api() {
   $inc = drupal_get_path('module', 'views_reveal') . '/inc';
@@ -21,8 +19,6 @@ function views_reveal_views_api() {
 
 /**
  * Implements hook_libraries_info().
- *
- * @return array
  */
 function views_reveal_libraries_info() {
 
@@ -49,6 +45,7 @@ function views_reveal_libraries_info() {
  * Versioning info for library.
  *
  * @return string
+ *   Reveal.js version.
  */
 function views_reveal_version() {
 
@@ -57,13 +54,6 @@ function views_reveal_version() {
 
 /**
  * Implements hook_theme().
- *
- * @param array $existing
- * @param string $type
- * @param string $theme
- * @param string $path
- *
- * @return array
  */
 function views_reveal_theme($existing, $type, $theme, $path) {
   $themes['views_reveal'] = array(
@@ -83,8 +73,6 @@ function views_reveal_theme($existing, $type, $theme, $path) {
 
 /**
  * Implements hook_theme_preprocess_page().
- *
- * @param array $vars
  */
 function views_reveal_preprocess_page(&$vars) {
   $view = views_get_page_view();
@@ -114,10 +102,9 @@ function template_preprocess_views_view_reveal(&$vars) {
  * Add assets to view for front-end display.
  *
  * @param object $view
- *  The active View object.
+ *   The active View object.
  */
 function views_reveal_assets(&$view) {
-
   $mod = drupal_get_path('module', 'views_reveal');
   $lib = libraries_get_path('reveal');
   $settings = views_reveal_get_settings($view->style_plugin->options);
@@ -148,8 +135,6 @@ function views_reveal_assets(&$view) {
 
 /**
  * Implements hook_css_alter().
- *
- * @param array $vars
  */
 function views_reveal_css_alter(&$vars) {
 // Override draggableViews list stylesheet for better UI.
@@ -165,8 +150,10 @@ function views_reveal_css_alter(&$vars) {
  * Configure plugin settings for js and flatten array.
  *
  * @param array $array
+ *   Array of settings from views_style_plugin.
  *
  * @return array
+ *   Merged & formatted settings.
  */
 function views_reveal_get_settings($array) {
   $options = array();
@@ -191,8 +178,10 @@ function views_reveal_get_settings($array) {
  * Format json.
  *
  * @param array $settings
+ *   Array of php settings.
  *
  * @return string
+ *   JSON settings.
  */
 function views_reveal_json_encode($settings) {
 
@@ -203,11 +192,6 @@ function views_reveal_json_encode($settings) {
 
 /**
  * Implements hook_help().
- *
- * @param string $path
- * @param array $arg
- *
- * @return string
  */
 function views_reveal_help($path, $arg) {
   $output = '';
